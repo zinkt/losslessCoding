@@ -13,6 +13,9 @@ bool huffman_decode(const char *in_file_name, const char *out_file_name){
         printf("Line8, open file [%s] failed\n", in_file_name);
         return false;
     }
+    ifs.seekg(0, std::ios_base::end);           // 移动到文件结尾
+    long file_size = ifs.tellg();               // 获取文件大小
+    ifs.seekg(0, std::ios_base::beg);           // 移动到开头
 
     ifs.read((char*)&meta, sizeof(Meta));                       // 读入元数据
     if(strcmp(meta.tag, "zinkt")){
@@ -37,26 +40,20 @@ bool huffman_decode(const char *in_file_name, const char *out_file_name){
         printf("Line33, open file [%s] failed\n", out_file_name);
     }
 
-    long data_start_location = ifs.tellg();
-    ifs.seekg(0, std::ios_base::end);
-    long file_size = ifs.tellg();
-    ifs.seekg(data_start_location, std::ios_base::beg);
-    long cur_location = ifs.tellg();
-
     char data;
     std::string code;
     Node n = ht.pq.top();                                      // 树根
     Node *pn = &n;
     int bit_idx = 0;
     ifs.read(&data, sizeof(data));
-    while(1){
+    while(1){                                                   // 根据树构建码
         if(is_leaf(pn)){
             char ch = deocde_dict[code];
             ofs.write(&ch, sizeof(char));
-            cur_location = ifs.tellg();
+            long cur_location = ifs.tellg();                         // 跳出，如果当前位置已到文件结尾
             if(cur_location >= file_size && bit_idx >= meta.last_byte_bits) break;
             code.clear();
-            pn = &n;//重新从根开始
+            pn = &n;    //重新从根开始
         }
         if(GET_BIT(data, bit_idx)){
             code += '1';
@@ -76,10 +73,6 @@ bool huffman_decode(const char *in_file_name, const char *out_file_name){
 
     return true;
 }
-
-
-
-
 
 
 #endif

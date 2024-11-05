@@ -62,9 +62,9 @@ bool huffman_encode(const char* in_file_name, const char *out_file_name){
         std::string code = ht.dict.at(ch);
         for(auto i : code){
             if(i == '0'){
-                CLR_BIT(data, data_bit_idx);
+                CLR_BIT(data, data_bit_idx);        // 或 data = (data << 1) | 1;
             }else{
-                SET_BIT(data, data_bit_idx);
+                SET_BIT(data, data_bit_idx);        // 或 data = (data << 1) | 0;
             }
             data_bit_idx++;
             if(data_bit_idx >= 8){

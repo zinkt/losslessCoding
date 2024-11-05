@@ -3,7 +3,7 @@
 #include <map>
 #include <queue>
 #include <iostream>
-#define DEBUG 0
+
 struct Node
 {
     char c;   //字符
@@ -23,9 +23,8 @@ public:
     std::map<char, std::string> dict;
     HuffmanTree(std::map<char, int> fmap){    // 传入统计好字符频率的map
         for(auto i : fmap){
-            std::cout << "Character: " << i.first << ", Frequency: " << i.second << std::endl;
             Node node(i.first,i.second);
-            pq.push(node);                      // 构建优先队列
+            pq.push(node);                      // 构建优先队列(小根堆)
         }
 
         while(pq.size() > 1){                   // 构建HuffmanTree
@@ -37,15 +36,19 @@ public:
             pq.push(node);
         }
         
-        Node root = pq.top();                   // 构建编码字典
-        std::string prefix;
-        _traverse_build_dict(&root, prefix);
+        if (!pq.empty()) {
+            Node root = pq.top();
+            std::string prefix;
+            _traverse_build_dict(&root, prefix);      // 构建编码字典
+        } else {
+            std::cerr << "错误：优先队列为空。" << std::endl;
+        }
 
     }
 
 private:
 
-    void _traverse_build_dict(Node *root, std::string &prefix){     // 深度优先
+    void _traverse_build_dict(Node *root, std::string &prefix){
         std::string ptmp = prefix;
 
         if(root->left != nullptr){
@@ -68,9 +71,5 @@ private:
         }
     }
 };
-
-
-
-
 
 #endif
