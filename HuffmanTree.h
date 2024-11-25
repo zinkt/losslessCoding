@@ -20,7 +20,7 @@ class HuffmanTree
 {
 public:
     std::priority_queue<Node> pq;
-    std::map<char, std::string> dict;
+    std::map<char, std::string> dict;       //编码字典
     HuffmanTree(std::map<char, int> fmap){    // 传入统计好字符频率的map
         for(auto i : fmap){
             Node node(i.first,i.second);

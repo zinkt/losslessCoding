@@ -8,6 +8,7 @@
 std::map<char, int> fmap;
 Meta meta;
 
+//     ｜ meta | mapentry,mapentry... | data |
 bool huffman_encode(const char* in_file_name, const char *out_file_name){
     char c;
     std::ifstream ifs(in_file_name, std::ios::binary);
