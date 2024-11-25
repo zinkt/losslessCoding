@@ -3,7 +3,7 @@
 #include <fstream>
 #include "HuffmanTree.h"
 #include "file_meta.h"
-
+#include <cstring>
 Meta meta;
 std::map<char,int> fmap;
 std::map<std::string, char> deocde_dict;

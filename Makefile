@@ -8,3 +8,5 @@ decode: decode.cpp $(DEP)
 
 clean:
 	rm -f *.out *.cps *.dcps
+# For windows:
+# del -f *.out *.cps *.dcps
